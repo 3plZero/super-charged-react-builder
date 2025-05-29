@@ -6,24 +6,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Employee } from '@/pages/Index';
-import { UserPlus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface AddEmployeeFormProps {
   onAdd: (employee: Omit<Employee, 'id'>) => void;
-  departments: string[];
 }
 
-export const AddEmployeeForm = ({ onAdd, departments }: AddEmployeeFormProps) => {
+export const AddEmployeeForm = ({ onAdd }: AddEmployeeFormProps) => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     position: '',
     department: '',
     salary: '',
-    email: '',
-    phone: '',
-    joinDate: new Date().toISOString().split('T')[0]
+    email: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -32,7 +28,7 @@ export const AddEmployeeForm = ({ onAdd, departments }: AddEmployeeFormProps) =>
     if (!formData.name || !formData.position || !formData.department || !formData.salary || !formData.email) {
       toast({
         title: "Error",
-        description: "Please fill in all required fields",
+        description: "Please fill in all fields",
         variant: "destructive"
       });
       return;
@@ -43,9 +39,7 @@ export const AddEmployeeForm = ({ onAdd, departments }: AddEmployeeFormProps) =>
       position: formData.position,
       department: formData.department,
       salary: parseInt(formData.salary),
-      email: formData.email,
-      phone: formData.phone,
-      joinDate: formData.joinDate
+      email: formData.email
     });
 
     setFormData({
@@ -53,14 +47,12 @@ export const AddEmployeeForm = ({ onAdd, departments }: AddEmployeeFormProps) =>
       position: '',
       department: '',
       salary: '',
-      email: '',
-      phone: '',
-      joinDate: new Date().toISOString().split('T')[0]
+      email: ''
     });
 
     toast({
       title: "Success!",
-      description: "Employee added successfully",
+      description: "Employee added successfully"
     });
   };
 
@@ -68,114 +60,76 @@ export const AddEmployeeForm = ({ onAdd, departments }: AddEmployeeFormProps) =>
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const departments = ['Engineering', 'Product', 'Design', 'Marketing', 'Sales', 'HR'];
+
   return (
-    <Card className="bg-white/10 backdrop-blur-lg border border-white/20 sticky top-6">
+    <Card>
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
-          <UserPlus className="h-5 w-5" />
-          Add New Employee
-        </CardTitle>
+        <CardTitle>Add New Employee</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="name" className="text-white">Name *</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
               placeholder="Enter full name"
               required
             />
           </div>
 
           <div>
-            <Label htmlFor="position" className="text-white">Position *</Label>
+            <Label htmlFor="position">Position</Label>
             <Input
               id="position"
               value={formData.position}
               onChange={(e) => handleInputChange('position', e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
               placeholder="Job title"
               required
             />
           </div>
 
           <div>
-            <Label htmlFor="department" className="text-white">Department *</Label>
+            <Label htmlFor="department">Department</Label>
             <Select value={formData.department} onValueChange={(value) => handleInputChange('department', value)}>
-              <SelectTrigger className="bg-white/20 border-white/30 text-white">
+              <SelectTrigger>
                 <SelectValue placeholder="Select department" />
               </SelectTrigger>
               <SelectContent>
                 {departments.map(dept => (
                   <SelectItem key={dept} value={dept}>{dept}</SelectItem>
                 ))}
-                <SelectItem value="Engineering">Engineering</SelectItem>
-                <SelectItem value="Product">Product</SelectItem>
-                <SelectItem value="Design">Design</SelectItem>
-                <SelectItem value="Marketing">Marketing</SelectItem>
-                <SelectItem value="Sales">Sales</SelectItem>
-                <SelectItem value="HR">HR</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="salary" className="text-white">Salary *</Label>
+            <Label htmlFor="salary">Salary</Label>
             <Input
               id="salary"
               type="number"
               value={formData.salary}
               onChange={(e) => handleInputChange('salary', e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
               placeholder="Annual salary"
               required
             />
           </div>
 
           <div>
-            <Label htmlFor="email" className="text-white">Email *</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
               placeholder="email@company.com"
               required
             />
           </div>
 
-          <div>
-            <Label htmlFor="phone" className="text-white">Phone</Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => handleInputChange('phone', e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
-              placeholder="+1 (555) 123-4567"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="joinDate" className="text-white">Join Date</Label>
-            <Input
-              id="joinDate"
-              type="date"
-              value={formData.joinDate}
-              onChange={(e) => handleInputChange('joinDate', e.target.value)}
-              className="bg-white/20 border-white/30 text-white"
-            />
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 transition-all duration-300 hover:scale-105"
-          >
-            <UserPlus className="h-4 w-4 mr-2" />
+          <Button type="submit" className="w-full">
             Add Employee
           </Button>
         </form>

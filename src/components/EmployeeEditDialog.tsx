@@ -22,9 +22,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
     position: employee.position,
     department: employee.department,
     salary: employee.salary.toString(),
-    email: employee.email,
-    phone: employee.phone,
-    joinDate: employee.joinDate
+    email: employee.email
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -33,7 +31,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
     if (!formData.name || !formData.position || !formData.department || !formData.salary || !formData.email) {
       toast({
         title: "Error",
-        description: "Please fill in all required fields",
+        description: "Please fill in all fields",
         variant: "destructive"
       });
       return;
@@ -45,16 +43,14 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
       position: formData.position,
       department: formData.department,
       salary: parseInt(formData.salary),
-      email: formData.email,
-      phone: formData.phone,
-      joinDate: formData.joinDate
+      email: formData.email
     });
 
     onClose();
 
     toast({
       title: "Success!",
-      description: "Employee updated successfully",
+      description: "Employee updated successfully"
     });
   };
 
@@ -66,14 +62,14 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white max-w-md">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Employee</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="edit-name">Name *</Label>
+            <Label htmlFor="edit-name">Name</Label>
             <Input
               id="edit-name"
               value={formData.name}
@@ -83,7 +79,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
           </div>
 
           <div>
-            <Label htmlFor="edit-position">Position *</Label>
+            <Label htmlFor="edit-position">Position</Label>
             <Input
               id="edit-position"
               value={formData.position}
@@ -93,7 +89,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
           </div>
 
           <div>
-            <Label htmlFor="edit-department">Department *</Label>
+            <Label htmlFor="edit-department">Department</Label>
             <Select value={formData.department} onValueChange={(value) => handleInputChange('department', value)}>
               <SelectTrigger>
                 <SelectValue />
@@ -107,7 +103,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
           </div>
 
           <div>
-            <Label htmlFor="edit-salary">Salary *</Label>
+            <Label htmlFor="edit-salary">Salary</Label>
             <Input
               id="edit-salary"
               type="number"
@@ -118,7 +114,7 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
           </div>
 
           <div>
-            <Label htmlFor="edit-email">Email *</Label>
+            <Label htmlFor="edit-email">Email</Label>
             <Input
               id="edit-email"
               type="email"
@@ -128,29 +124,9 @@ export const EmployeeEditDialog = ({ employee, isOpen, onClose, onUpdate }: Empl
             />
           </div>
 
-          <div>
-            <Label htmlFor="edit-phone">Phone</Label>
-            <Input
-              id="edit-phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => handleInputChange('phone', e.target.value)}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="edit-joinDate">Join Date</Label>
-            <Input
-              id="edit-joinDate"
-              type="date"
-              value={formData.joinDate}
-              onChange={(e) => handleInputChange('joinDate', e.target.value)}
-            />
-          </div>
-
           <div className="flex gap-2 pt-4">
             <Button type="submit" className="flex-1">
-              Update Employee
+              Update
             </Button>
             <Button type="button" variant="outline" onClick={onClose} className="flex-1">
               Cancel
