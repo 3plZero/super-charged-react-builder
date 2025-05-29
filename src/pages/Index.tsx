@@ -51,7 +51,7 @@ const Index = () => {
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterDepartment, setFilterDepartment] = useState('');
+  const [filterDepartment, setFilterDepartment] = useState('all');
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -75,7 +75,7 @@ const Index = () => {
       const matchesSearch = emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            emp.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            emp.email.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesDepartment = !filterDepartment || emp.department === filterDepartment;
+      const matchesDepartment = filterDepartment === 'all' || emp.department === filterDepartment;
       return matchesSearch && matchesDepartment;
     })
     .sort((a, b) => {
